@@ -1,11 +1,12 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, m, useReducedMotion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { blurbFor, type Item, type Profile } from "@/data/content";
 import { play } from "@/lib/sound";
+import { useIsClient } from "@/lib/useIsClient";
 import Art from "./Art";
 import { IconLinks } from "./LinkButtons";
 import MatchTag from "./MatchTag";
@@ -29,6 +30,7 @@ export default function Card({ item, profile, onOpen, preferPlaceholder, rank }:
   const timer = useRef<number | undefined>(undefined);
   const [box, setBox] = useState<Box | null>(null);
   const reduce = useReducedMotion();
+  const client = useIsClient();
 
   const close = useCallback(() => {
     window.clearTimeout(timer.current);
@@ -75,11 +77,11 @@ export default function Card({ item, profile, onOpen, preferPlaceholder, rank }:
   };
 
   return (
-    <div className={`relative shrink-0 snap-start ${rank ? "card-w-rank flex items-center" : "card-w"}`}>
+    <div className={`relative shrink-0 snap-start ${rank ? "card-w flex items-center" : "card-w"}`}>
       {rank && (
         <span
           aria-hidden
-          className="font-display pointer-events-none -mr-[3%] select-none text-[clamp(84px,10vw,140px)] font-bold leading-[0.78] tracking-[-0.08em] text-bg [-webkit-text-stroke:2px_rgba(255,255,255,0.55)]"
+          className="font-display pointer-events-none -mr-[4%] w-[30%] shrink-0 select-none text-right text-[clamp(64px,8vw,128px)] font-bold leading-[0.78] tracking-[-0.08em] text-bg [-webkit-text-stroke:2px_rgba(255,255,255,0.55)]"
         >
           {rank}
         </span>
@@ -100,11 +102,11 @@ export default function Card({ item, profile, onOpen, preferPlaceholder, rank }:
       <p className="mt-2 truncate pr-2 text-[13px] text-muted">{item.title}</p>
       </div>
 
-      {typeof document !== "undefined" &&
+      {client &&
         createPortal(
           <AnimatePresence>
             {box && (
-              <motion.div
+              <m.div
                 key="preview"
                 onMouseLeave={close}
                 initial={{ opacity: 0, scale: reduce ? 1 : 1 / SCALE }}
@@ -147,7 +149,7 @@ export default function Card({ item, profile, onOpen, preferPlaceholder, rank }:
                     </ul>
                   )}
                 </div>
-              </motion.div>
+              </m.div>
             )}
           </AnimatePresence>,
           document.body,

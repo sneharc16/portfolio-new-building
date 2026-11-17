@@ -103,9 +103,6 @@ body {
 .card-w {
   width: calc((100vw - 2 * var(--gutter) - var(--card-gap) * (var(--per) - 1)) / var(--per));
 }
-.card-w-rank {
-  width: calc(1.32 * (100vw - 2 * var(--gutter) - var(--card-gap) * (var(--per) - 1)) / var(--per));
-}
 .card-w-feature {
   width: min(100%, calc(2 * (100vw - 2 * var(--gutter) - var(--card-gap) * (var(--per) - 1)) / var(--per) + var(--card-gap)));
   min-width: min(100%, 320px);

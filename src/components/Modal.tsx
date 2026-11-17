@@ -1,10 +1,11 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, m, useReducedMotion } from "framer-motion";
 import { X } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { play } from "@/lib/sound";
+import { useIsClient } from "@/lib/useIsClient";
 
 type Props = {
   open: boolean;
@@ -21,6 +22,7 @@ const FOCUSABLE = 'a[href],button:not([disabled]),textarea,input,select,[tabinde
 export default function Modal({ open, onClose, label, children, width = 900 }: Props) {
   const panel = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
+  const client = useIsClient();
 
   useEffect(() => {
     if (!open) return;
@@ -58,12 +60,12 @@ export default function Modal({ open, onClose, label, children, width = 900 }: P
     };
   }, [open, onClose]);
 
-  if (typeof document === "undefined") return null;
+  if (!client) return null;
 
   return createPortal(
     <AnimatePresence>
       {open && (
-        <motion.div
+        <m.div
           className="fixed inset-0 z-[80] overflow-y-auto overscroll-contain"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -77,7 +79,7 @@ export default function Modal({ open, onClose, label, children, width = 900 }: P
             className="relative flex min-h-full items-start justify-center sm:px-6 sm:py-10"
             onMouseDown={(e) => e.target === e.currentTarget && onClose()}
           >
-            <motion.div
+            <m.div
               ref={panel}
               role="dialog"
               aria-modal="true"
@@ -99,9 +101,9 @@ export default function Modal({ open, onClose, label, children, width = 900 }: P
                 <X className="h-5 w-5" />
               </button>
               {children}
-            </motion.div>
+            </m.div>
           </div>
-        </motion.div>
+        </m.div>
       )}
     </AnimatePresence>,
     document.body,
