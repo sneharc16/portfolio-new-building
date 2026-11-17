@@ -51,13 +51,11 @@ describe("content.ts", () => {
   });
 
   it("orders rows per profile", () => {
-    const ids = (p: "tech" | "product" | "both") => rowsFor(p).map((r) => r.id);
+    const ids = (p: "tech" | "product") => rowsFor(p).map((r) => r.id);
     expect(ids("tech")).toEqual(["now", "experience", "projects", "competitions", "research", "leadership", "skills", "awards", "contact"]);
     expect(ids("product")).toEqual(["now", "experience", "competitions", "projects", "research", "leadership", "skills", "awards", "contact"]);
-    expect(ids("both")).toEqual(ids("tech"));
     expect(rowsFor("product")[1].items[0].slug).toBe("kpmg");
     expect(rowsFor("product")[2].items.slice(0, 5).every((i) => i.pinProduct)).toBe(true);
-    expect(rowsFor("both")[2].items.map((i) => i.slug).slice(-2)).toEqual(["makhmade", "project-rakshak"]);
   });
 });
 

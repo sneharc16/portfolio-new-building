@@ -4,8 +4,8 @@
  * A link whose value is "TODO" renders as a disabled "Coming soon" button.
  */
 
-export type Profile = "tech" | "product" | "both";
-export type Lane = "tech" | "product";
+export type Profile = "tech" | "product";
+export type Lane = Profile;
 
 export type LinkKey = "github" | "live" | "paper" | "report" | "deck" | "demo" | "event" | "profile";
 export type Links = Partial<Record<LinkKey, string>>;
@@ -80,27 +80,15 @@ export const hero: Record<Profile, { label: string; tagline: string }> = {
     tagline:
       "Engineer turned product thinker: PRDs for a Rs. 60,000 Cr public programme, a 4-portal internal platform at Cars24, and eight product and B-plan wins across IITs and IIMs.",
   },
-  both: {
-    label: "Engineer who also does product",
-    tagline:
-      "Writes the PRD, builds the thing, then competes at ICPC on the weekend. Pick a lane? Why.",
-  },
 };
 
 export const heroLogos = ["makemytrip", "cars24", "kpmg", "igdtuw", "drdo"];
 
 /* ------------------------------------------------------------------ profiles */
 
-export const BOTH_SUBTITLES = {
-  receipts: "Can do both. Has the receipts.",
-  prdThenBuild: "Writes the PRD, then builds it.",
-  whyChoose: "Why choose?",
-} as const;
-
 export const profileMeta: Record<Profile, { label: string; accent: string; subtitle: string }> = {
   tech: { label: "Tech", accent: "#3B82F6", subtitle: "Ships the code." },
   product: { label: "Product", accent: "#F59E0B", subtitle: "Decides what ships." },
-  both: { label: "Both", accent: "#8B5CF6", subtitle: BOTH_SUBTITLES.receipts },
 };
 
 /* ------------------------------------------------------------------- about */
@@ -755,9 +743,7 @@ export const skills: { tech: Record<string, string[]>; product: Record<string, s
 };
 
 export function skillsFor(profile: Profile): Record<string, string[]> {
-  if (profile === "tech") return skills.tech;
-  if (profile === "product") return skills.product;
-  return { ...skills.tech, ...skills.product };
+  return skills[profile];
 }
 
 /* ---------------------------------------------------------------- lookups */
@@ -776,15 +762,8 @@ function pick(list: Item[], slugs: string[]): Item[] {
   });
 }
 
-/** The lane whose blurb a card shows. BOTH picks the lane with the higher match score. */
-export function laneFor(item: Item, profile: Profile): Lane {
-  if (profile !== "both") return profile;
-  return (item.matchProduct ?? 0) > (item.matchTech ?? 0) ? "product" : "tech";
-}
-
 export function blurbFor(item: Item, profile: Profile): string {
-  const lane = laneFor(item, profile);
-  const own = lane === "tech" ? item.blurbTech : item.blurbProduct;
+  const own = profile === "tech" ? item.blurbTech : item.blurbProduct;
   return own ?? item.blurb ?? item.blurbTech ?? item.blurbProduct ?? "";
 }
 
@@ -795,7 +774,6 @@ export type Row = { id: string; title: string; kind: RowKind; anchor?: string; i
 
 const TECH_TOP = ["llm-gisx", "groww-delta", "swasth-infinity", "intelligent-os-assistant", "quant-forecasting"];
 const PRODUCT_TOP = ["groww-delta", "makhmade", "llm-gisx", "swasth-infinity", "project-rakshak"];
-const BOTH_TOP = [...TECH_TOP, "makhmade", "project-rakshak"];
 
 export function rowsFor(profile: Profile): Row[] {
   const now: Row = { id: "now", title: "Now streaming", kind: "feature", items: pick(experience, ["makemytrip"]) };
@@ -824,7 +802,7 @@ export function rowsFor(profile: Profile): Row[] {
   return [
     now,
     { id: "experience", title: "Experience", kind: "cards", anchor: "experience", items: pick(experience, ["makemytrip", "cars24", "kpmg", "drdo"]) },
-    { id: "projects", title: "Top projects", kind: "top10", anchor: "projects", items: pick(projects, profile === "both" ? BOTH_TOP : TECH_TOP) },
+    { id: "projects", title: "Top projects", kind: "top10", anchor: "projects", items: pick(projects, TECH_TOP) },
     { id: "competitions", title: "Hackathons and competitions", kind: "cards", anchor: "achievements", items: competitions },
     research_,
     leadership_,

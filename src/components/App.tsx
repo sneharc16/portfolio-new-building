@@ -52,6 +52,11 @@ export default function App({ initialProfile, initialItem }: Props) {
 
   const accent = profile ? profileMeta[profile].accent : "#FFFFFF";
 
+  // Portaled UI (modals, previews) lives outside this tree, so the accent also goes on <html>.
+  useEffect(() => {
+    document.documentElement.style.setProperty("--accent", accent);
+  }, [accent]);
+
   return (
     <div style={{ ["--accent" as string]: accent }}>
       <AnimatePresence mode="wait" initial={false}>

@@ -1,6 +1,6 @@
 import type { Profile } from "@/data/content";
 
-export const PROFILES: Profile[] = ["tech", "product", "both"];
+export const PROFILES: Profile[] = ["tech", "product"];
 export const STORAGE_KEY = "sr-profile";
 
 export function parseProfile(value: unknown): Profile | null {
@@ -38,4 +38,4 @@ export function urlFor(profile: Profile | null, item?: string | null): string {
  */
 export const returningVisitorScript = `(function(){try{var u=new URL(location.href);if(u.pathname!=="/"||u.searchParams.has("profile"))return;var p=localStorage.getItem(${JSON.stringify(
   STORAGE_KEY,
-)});if(p==="tech"||p==="product"||p==="both"){u.searchParams.set("profile",p);location.replace(u.pathname+u.search+u.hash)}}catch(e){}})();`;
+)});if(p==="tech"||p==="product"){u.searchParams.set("profile",p);location.replace(u.pathname+u.search+u.hash)}}catch(e){}})();`;

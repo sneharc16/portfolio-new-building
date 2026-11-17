@@ -82,3 +82,43 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Cards per row (a fractional count leaves a peek of the next card). */
+:root {
+  --per: 2.3;
+  --card-gap: 12px;
+}
+@media (min-width: 600px) {
+  :root { --per: 3.3; }
+}
+@media (min-width: 900px) {
+  :root { --per: 4.3; }
+}
+@media (min-width: 1100px) {
+  :root { --per: 5.3; }
+}
+@media (min-width: 1280px) {
+  :root { --per: 6.3; }
+}
+.card-w {
+  width: calc((100vw - 2 * var(--gutter) - var(--card-gap) * (var(--per) - 1)) / var(--per));
+}
+.card-w-rank {
+  width: calc(1.32 * (100vw - 2 * var(--gutter) - var(--card-gap) * (var(--per) - 1)) / var(--per));
+}
+.card-w-feature {
+  width: min(100%, calc(2 * (100vw - 2 * var(--gutter) - var(--card-gap) * (var(--per) - 1)) / var(--per) + var(--card-gap)));
+  min-width: min(100%, 320px);
+}
+
+@keyframes drift {
+  0% { transform: translate3d(-6%, -4%, 0) rotate(0deg) scale(1); }
+  50% { transform: translate3d(6%, 4%, 0) rotate(8deg) scale(1.08); }
+  100% { transform: translate3d(-6%, -4%, 0) rotate(0deg) scale(1); }
+}
+.billboard-glow {
+  animation: drift 22s ease-in-out infinite;
+}
+.billboard-glow-2 {
+  animation: drift 30s ease-in-out infinite reverse;
+}
