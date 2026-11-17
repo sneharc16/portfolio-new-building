@@ -60,3 +60,15 @@ describe("content.ts", () => {
     expect(rowsFor("both")[2].items.map((i) => i.slug).slice(-2)).toEqual(["makhmade", "project-rakshak"]);
   });
 });
+
+describe("logos", () => {
+  it("has a file on disk for every mapped logo and a name for every key used", async () => {
+    const { existsSync } = await import("node:fs");
+    const { logoFiles, logoNames } = await import("@/lib/logos");
+    for (const [key, path] of Object.entries(logoFiles)) expect(existsSync(join(ROOT, "public", path)), key).toBe(true);
+    for (const item of allItems) {
+      if (item.logo) expect(logoNames[item.logo], item.slug).toBeTruthy();
+      if (item.secondaryLogo) expect(logoNames[item.secondaryLogo], item.slug).toBeTruthy();
+    }
+  });
+});
