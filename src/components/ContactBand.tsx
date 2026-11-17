@@ -15,8 +15,8 @@ export default function ContactBand() {
       <div className="gutter">
         <div className="relative overflow-hidden rounded-2xl bg-surface px-6 py-10 sm:px-10 sm:py-14">
           <div
-            className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full opacity-30 blur-[80px]"
-            style={{ background: "var(--accent)" }}
+            className="pointer-events-none absolute -right-24 -top-24 h-96 w-96 rounded-full opacity-40"
+            style={{ background: "radial-gradient(closest-side, var(--accent), transparent)" }}
             aria-hidden
           />
           <h2 id="row-contact" className="font-display relative text-[clamp(26px,3.6vw,44px)] font-semibold leading-tight tracking-[-0.02em]">

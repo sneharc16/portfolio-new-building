@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { useCallback, useMemo, useState } from "react";
 import { getItem, projects, rowsFor, type Profile } from "@/data/content";
 import AboutModal from "./AboutModal";
@@ -33,7 +33,7 @@ export default function Home({ profile, item, onOpenItem, onSwitchProfile, onCho
   const isProject = !!active && projects.some((p) => p.slug === active.slug);
 
   return (
-    <motion.div
+    <m.div
       id="top"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -70,6 +70,6 @@ export default function Home({ profile, item, onOpenItem, onSwitchProfile, onCho
       <DetailModal item={active} profile={profile} more={more} placeholderArt={isProject} onOpen={onOpenItem} onClose={close} />
       <AboutModal open={aboutOpen} onClose={() => setAboutOpen(false)} />
       <Toaster />
-    </motion.div>
+    </m.div>
   );
 }

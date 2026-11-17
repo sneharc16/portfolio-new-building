@@ -94,7 +94,7 @@ function Body({ item, profile, more, placeholderArt, onOpen }: Omit<Props, "onCl
             <button
               type="button"
               onClick={() => onOpen(related.slug)}
-              className="flex w-full items-center gap-3 rounded-md bg-accent px-4 py-2.5 text-left text-sm font-semibold text-white transition-opacity duration-200 hover:opacity-90"
+              className="flex w-full items-center gap-3 rounded-md bg-accent px-4 py-2.5 text-left text-sm font-semibold text-[#0B0B0B] transition-opacity duration-200 hover:opacity-90"
             >
               Open project: {related.title.split(/[:(]/)[0].trim()}
               <ArrowUpRight className="ml-auto h-4 w-4 shrink-0" aria-hidden />

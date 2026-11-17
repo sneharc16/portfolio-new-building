@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import { ChevronDown, Menu, Repeat, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { identity, profileMeta, type Profile } from "@/data/content";
@@ -119,7 +119,7 @@ export default function Nav({ profile, onSwitchProfile, onChooseProfile }: Props
             </button>
             <AnimatePresence>
               {menu && (
-                <motion.div
+                <m.div
                   role="menu"
                   initial={{ opacity: 0, y: -6 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -156,7 +156,7 @@ export default function Nav({ profile, onSwitchProfile, onChooseProfile }: Props
                   >
                     <Repeat className="h-4 w-4" aria-hidden /> Switch profile
                   </button>
-                </motion.div>
+                </m.div>
               )}
             </AnimatePresence>
           </div>
@@ -175,7 +175,7 @@ export default function Nav({ profile, onSwitchProfile, onChooseProfile }: Props
 
       <AnimatePresence>
         {sheet && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
@@ -195,7 +195,7 @@ export default function Nav({ profile, onSwitchProfile, onChooseProfile }: Props
               </li>
               <li className="pt-4 text-xs text-muted">{identity.email}</li>
             </ul>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </header>

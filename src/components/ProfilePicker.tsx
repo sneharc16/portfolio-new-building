@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { m, useReducedMotion } from "framer-motion";
 import { profileMeta, type Profile } from "@/data/content";
 import { PROFILES } from "@/lib/profile";
 import { play } from "@/lib/sound";
@@ -41,7 +41,7 @@ type Props = { onSelect: (p: Profile) => void };
 export default function ProfilePicker({ onSelect }: Props) {
   const reduce = useReducedMotion();
   return (
-    <motion.main
+    <m.main
       key="picker"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -90,6 +90,6 @@ export default function ProfilePicker({ onSelect }: Props) {
           );
         })}
       </ul>
-    </motion.main>
+    </m.main>
   );
 }

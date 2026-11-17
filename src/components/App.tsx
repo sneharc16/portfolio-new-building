@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, LazyMotion, domAnimation } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
 import { getItem, profileMeta, type Profile } from "@/data/content";
 import { parseProfile, storeProfile, urlFor } from "@/lib/profile";
@@ -61,6 +61,7 @@ export default function App({ initialProfile, initialItem }: Props) {
   }, [accent]);
 
   return (
+    <LazyMotion features={domAnimation} strict>
     <div style={{ ["--accent" as string]: accent }}>
       <AnimatePresence mode="wait" initial={false}>
         {profile ? (
@@ -77,5 +78,6 @@ export default function App({ initialProfile, initialItem }: Props) {
         )}
       </AnimatePresence>
     </div>
+    </LazyMotion>
   );
 }

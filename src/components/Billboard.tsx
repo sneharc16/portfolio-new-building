@@ -13,11 +13,11 @@ export default function Billboard({ profile, onAbout }: Props) {
     <section className="relative flex min-h-[100svh] items-end overflow-hidden" aria-label="Introduction">
       <div className="absolute inset-0 bg-bg" aria-hidden>
         <div
-          className="billboard-glow absolute -right-[20%] -top-[30%] h-[120%] w-[90%] rounded-full opacity-90 blur-[80px]"
+          className="billboard-glow absolute -right-[20%] -top-[30%] h-[120%] w-[90%] rounded-full opacity-80 will-change-transform"
           style={{ background: `radial-gradient(closest-side, ${accent}, transparent)` }}
         />
         <div
-          className="billboard-glow-2 absolute -bottom-[40%] left-[10%] h-[80%] w-[60%] rounded-full opacity-50 blur-[100px]"
+          className="billboard-glow-2 absolute -bottom-[40%] left-[10%] h-[80%] w-[60%] rounded-full opacity-45 will-change-transform"
           style={{ background: `radial-gradient(closest-side, ${accent}, transparent)` }}
         />
         <div

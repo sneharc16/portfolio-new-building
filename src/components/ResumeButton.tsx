@@ -2,33 +2,12 @@
 
 import { Download, ExternalLink, FileText } from "lucide-react";
 import { useEffect, useState } from "react";
+import available from "@/data/resumes.json";
 import { identity, type Profile } from "@/data/content";
 import { play } from "@/lib/sound";
 
 export function toast(message: string) {
   window.dispatchEvent(new CustomEvent("sr-toast", { detail: message }));
-}
-
-/** Checks once per path whether the PDF has been dropped into /public/resume yet. */
-const cache = new Map<string, Promise<boolean>>();
-function useExists(path: string) {
-  const [exists, setExists] = useState<boolean | null>(null);
-  useEffect(() => {
-    let alive = true;
-    if (!cache.has(path)) {
-      cache.set(
-        path,
-        fetch(path, { method: "HEAD" })
-          .then((r) => r.ok && (r.headers.get("content-type") ?? "").includes("pdf"))
-          .catch(() => false),
-      );
-    }
-    cache.get(path)!.then((ok) => alive && setExists(ok));
-    return () => {
-      alive = false;
-    };
-  }, [path]);
-  return exists;
 }
 
 const COMING_SOON = "Resume coming soon";
@@ -38,14 +17,14 @@ type Props = { profile: Profile; variant: "nav" | "hero" };
 /**
  * TECH → /resume/sneha-tech.pdf, PRODUCT → /resume/sneha-product.pdf.
  * Download uses an anchor with `download`; "View" opens it in a new tab.
- * If the PDF is missing the button still renders and shows a "Resume coming soon" toast.
+ * Availability comes from src/data/resumes.json (written at build time). If the PDF is missing the button still renders and shows a "Resume coming soon" toast.
  */
 export default function ResumeButton({ profile, variant }: Props) {
   const path = identity.resume[profile];
-  const exists = useExists(path);
+  const exists = available[profile];
   const fileName = `Sneha-Roychowdhury-${profile === "tech" ? "SDE" : "APM"}-Resume.pdf`;
   const guard = (e: React.MouseEvent) => {
-    if (exists === false) {
+    if (!exists) {
       e.preventDefault();
       toast(COMING_SOON);
     }
@@ -59,7 +38,7 @@ export default function ResumeButton({ profile, variant }: Props) {
           target="_blank"
           rel="noopener noreferrer"
           onClick={guard}
-          className="inline-flex h-12 items-center gap-2 rounded-md bg-accent px-6 text-[15px] font-semibold text-white transition-[filter] duration-200 hover:brightness-110"
+          className="inline-flex h-12 items-center gap-2 rounded-md bg-accent px-6 text-[15px] font-semibold text-[#0B0B0B] transition-[filter] duration-200 hover:brightness-110"
         >
           <FileText className="h-5 w-5" aria-hidden />
           View Resume

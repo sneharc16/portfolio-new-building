@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sneha Roychowdhury: portfolio
 
-## Getting Started
+A streaming-style portfolio: a profile picker on entry, a full-bleed billboard, horizontally scrolling rows of cards,
+hover previews and a detail modal for every item. Two profiles (Tech and Product) share one data file.
 
-First, run the development server:
+Built with Next.js 16 (App Router), TypeScript, Tailwind CSS 4 and Framer Motion.
+
+## Run it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
+pnpm dev          # http://localhost:3000
+pnpm test         # Vitest: content rules (unique slugs, https links, no grades)
+pnpm build && pnpm start
+pnpm e2e          # Playwright: 9 viewports x 4 URLs, screenshots in /screenshots
+node scripts/screenshot-grid.mjs   # stitch the screenshots into one grid per URL
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Playwright needs Chromium once: `pnpm exec playwright install chromium`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Where things live
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| What | Where |
+| --- | --- |
+| All content (items, hero copy, about, timeline, skills) | `src/data/content.ts` |
+| Row order per profile | `rowsFor()` in `src/data/content.ts` |
+| Logos | `public/logos` (sources in `public/logos/SOURCES.md`), map in `src/lib/logos.ts` |
+| Project screenshots | `public/art` |
+| Resumes | `public/resume` |
+| UI sounds (synthesised, no audio files) | `src/lib/sound.ts` |
 
-## Learn More
+## Add a project
 
-To learn more about Next.js, take a look at the following resources:
+1. Add one object to `projects` in `src/data/content.ts` (copy an existing one: `slug`, `title`, `kicker`,
+   `matchTech`/`matchProduct`, blurbs, bullets, `stack`, `links`).
+2. Add its slug to the Top projects list for the profile(s) it belongs to (`TECH_TOP` / `PRODUCT_TOP`).
+3. Optional: drop a 16:9 screenshot into `public/art/<slug>.jpg` and set `art: "/art/<slug>.jpg"`.
+   Without it, the card shows a dark placeholder with the project's initials.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+A link set to `TODO` renders a disabled "Coming soon" button; links you leave out render nothing.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Resumes
+
+Copy the PDFs to:
+
+- `public/resume/sneha-tech.pdf` (SDE resume, used by the Tech profile)
+- `public/resume/sneha-product.pdf` (APM resume, used by the Product profile)
+
+`scripts/resume-manifest.mjs` runs before every `dev` and `build` and records which files exist. Until a file is
+there, the Resume buttons show a "Resume coming soon" toast. After adding the PDFs, rebuild (or redeploy).
+
+## Logos
+
+`bash scripts/fetch-logos.sh && node scripts/process-logos.mjs` re-downloads the logos from Wikimedia and
+normalises the rasters onto white. Organisations without a usable file (ICPC, CodeChef, Eightfold, SIH, TEDx) show
+their initials on the same white tile. To add one, save it as `public/logos/<key>.svg` or `.png` and add the key to
+`logoFiles` in `src/lib/logos.ts`. Check `/logos` (not linked from the site) to compare all tiles.
+
+## URLs
+
+| URL | Opens |
+| --- | --- |
+| `/` | Profile picker (returning visitors go straight to their last profile) |
+| `/?profile=tech` | Tech view: engineering blurbs, SDE resume, blue accent |
+| `/?profile=product` | Product view: product blurbs, KPMG first, APM resume, amber accent |
+| `/?profile=tech&item=llm-gisx` | Tech view with that item's detail modal open |
+
+`item` is any slug from `content.ts`. Share `/?profile=tech` with engineering recruiters and `/?profile=product` with
+product ones.
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Push this repo to GitHub.
+2. On vercel.com: **Add New → Project**, import the repo. Framework preset **Next.js**; keep the default build
+   command (`pnpm build`) and output settings.
+3. Deploy. Optionally set `NEXT_PUBLIC_SITE_URL` (e.g. `https://your-domain.com`) so social cards use your domain;
+   on Vercel it falls back to the production URL automatically.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+No `vercel.json` is needed.
