@@ -3,6 +3,7 @@
 import { Download, ExternalLink, FileText } from "lucide-react";
 import { useEffect, useState } from "react";
 import { identity, type Profile } from "@/data/content";
+import { play } from "@/lib/sound";
 
 export function toast(message: string) {
   window.dispatchEvent(new CustomEvent("sr-toast", { detail: message }));
@@ -109,6 +110,7 @@ export function Toaster() {
     let t: number | undefined;
     const on = (e: Event) => {
       setMsg((e as CustomEvent<string>).detail);
+      play("chime");
       window.clearTimeout(t);
       t = window.setTimeout(() => setMsg(null), 2600);
     };

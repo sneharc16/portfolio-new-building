@@ -5,6 +5,7 @@ import { ChevronDown } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { blurbFor, type Item, type Profile } from "@/data/content";
+import { play } from "@/lib/sound";
 import Art from "./Art";
 import { IconLinks } from "./LinkButtons";
 import MatchTag from "./MatchTag";
@@ -48,6 +49,7 @@ export default function Card({ item, profile, onOpen, preferPlaceholder, rank }:
       // Grow from the edge the card is pinned to, so it never clips at the row edges.
       const originX = left === gutter && ideal < gutter ? "0%" : ideal > left ? "100%" : "50%";
       const artH = (width * 9) / 16;
+      play("tick");
       setBox({ left: left + window.scrollX, top: r.top + window.scrollY + r.height / 2 - artH / 2, width, originX });
     }, HOVER_DELAY);
   };
@@ -67,6 +69,7 @@ export default function Card({ item, profile, onOpen, preferPlaceholder, rank }:
   useEffect(() => () => window.clearTimeout(timer.current), []);
 
   const open = () => {
+    play("click");
     close();
     onOpen(item.slug);
   };

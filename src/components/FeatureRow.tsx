@@ -7,7 +7,7 @@ export default function FeatureRow({ row, profile, onOpen }: { row: Row; profile
   const item: Item = row.items[0];
   return (
     <section aria-labelledby={`row-${row.id}`}>
-      <h2 id={`row-${row.id}`} className="gutter font-display text-[clamp(20px,2.2vw,28px)] font-semibold tracking-[-0.01em] text-ink">
+      <h2 id={`row-${row.id}`} className="gutter font-display text-[clamp(24px,2.2vw,28px)] font-semibold tracking-[-0.01em] text-ink">
         {row.title}
       </h2>
       <div className="gutter mt-3">

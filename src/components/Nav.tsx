@@ -7,6 +7,8 @@ import { identity, profileMeta, type Profile } from "@/data/content";
 import { PROFILES } from "@/lib/profile";
 import { ProfileAvatar } from "./ProfilePicker";
 import ResumeButton from "./ResumeButton";
+import SoundToggle from "./SoundToggle";
+import { play } from "@/lib/sound";
 
 export const ANCHORS = [
   { id: "experience", label: "Experience" },
@@ -98,11 +100,15 @@ export default function Nav({ profile, onSwitchProfile, onChooseProfile }: Props
           <div className="hidden sm:block">
             <ResumeButton profile={profile} variant="nav" />
           </div>
+          <SoundToggle />
 
           <div className="relative" ref={menuRef}>
             <button
               type="button"
-              onClick={() => setMenu((m) => !m)}
+              onClick={() => {
+                play("tick");
+                setMenu((m) => !m);
+              }}
               aria-expanded={menu}
               aria-haspopup="menu"
               aria-label={`Profile: ${profileMeta[profile].label}. Switch profile`}

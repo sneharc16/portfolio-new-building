@@ -4,6 +4,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { X } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
+import { play } from "@/lib/sound";
 
 type Props = {
   open: boolean;
@@ -23,6 +24,7 @@ export default function Modal({ open, onClose, label, children, width = 900 }: P
 
   useEffect(() => {
     if (!open) return;
+    play("open");
     const previous = document.activeElement as HTMLElement | null;
     const { overflow } = document.body.style;
     document.body.style.overflow = "hidden";
@@ -51,6 +53,7 @@ export default function Modal({ open, onClose, label, children, width = 900 }: P
       window.clearTimeout(t);
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = overflow;
+      play("close");
       previous?.focus?.({ preventScroll: true });
     };
   }, [open, onClose]);

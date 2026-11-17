@@ -4,7 +4,7 @@ export default function SkillGrid({ profile }: { profile: Profile }) {
   const groups = Object.entries(skillsFor(profile));
   return (
     <section aria-labelledby="row-skills" className="gutter">
-      <h2 id="row-skills" className="font-display text-[clamp(20px,2.2vw,28px)] font-semibold tracking-[-0.01em] text-ink">
+      <h2 id="row-skills" className="font-display text-[clamp(24px,2.2vw,28px)] font-semibold tracking-[-0.01em] text-ink">
         Skills
       </h2>
       <div className={`mt-4 grid gap-4 md:grid-cols-2 ${groups.length === 4 ? "xl:grid-cols-4" : "xl:grid-cols-3"}`}>

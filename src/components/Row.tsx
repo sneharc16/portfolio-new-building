@@ -3,6 +3,7 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Profile, Row as RowT } from "@/data/content";
+import { play } from "@/lib/sound";
 import Art from "./Art";
 import Card from "./Card";
 import Modal from "./Modal";
@@ -30,6 +31,7 @@ export default function Row({ row, profile, onOpen }: Props) {
 
   const page = (dir: 1 | -1) => {
     const el = scroller.current;
+    play("tick");
     if (el) el.scrollBy({ left: dir * el.clientWidth * 0.85, behavior: "smooth" });
   };
 
@@ -50,7 +52,7 @@ export default function Row({ row, profile, onOpen }: Props) {
   return (
     <section aria-labelledby={headingId} className="group/row relative" data-row={row.id}>
       <div className="gutter flex items-baseline justify-between gap-4">
-        <h2 id={headingId} className="font-display text-[clamp(20px,2.2vw,28px)] font-semibold tracking-[-0.01em] text-ink">
+        <h2 id={headingId} className="font-display text-[clamp(24px,2.2vw,28px)] font-semibold tracking-[-0.01em] text-ink">
           {row.title}
         </h2>
         {row.items.length > 2 && (

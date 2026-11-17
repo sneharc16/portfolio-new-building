@@ -4,6 +4,7 @@ import { AnimatePresence } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
 import { getItem, profileMeta, type Profile } from "@/data/content";
 import { parseProfile, storeProfile, urlFor } from "@/lib/profile";
+import { play } from "@/lib/sound";
 import Home from "./Home";
 import ProfilePicker from "./ProfilePicker";
 
@@ -28,6 +29,7 @@ export default function App({ initialProfile, initialItem }: Props) {
   }, [initialProfile]);
 
   const choose = useCallback((p: Profile) => {
+    play("intro");
     storeProfile(p);
     setProfile(p);
     setItem(null);
@@ -36,6 +38,7 @@ export default function App({ initialProfile, initialItem }: Props) {
   }, []);
 
   const switchProfile = useCallback(() => {
+    play("click");
     setProfile(null);
     setItem(null);
     window.history.pushState(null, "", "/");

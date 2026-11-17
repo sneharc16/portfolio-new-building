@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { profileMeta, type Profile } from "@/data/content";
 import { PROFILES } from "@/lib/profile";
+import { play } from "@/lib/sound";
 
 /**
  * Original streaming-style profile avatars: a flat colour square with a simple face.
@@ -61,6 +62,7 @@ export default function ProfilePicker({ onSelect }: Props) {
               <button
                 type="button"
                 onClick={() => onSelect(p)}
+                onMouseEnter={() => play("tick")}
                 className="group flex w-full items-center gap-4 rounded-xl p-2 text-left outline-none transition-transform duration-200 ease-out hover:scale-[1.06] focus-visible:scale-[1.06] sm:flex-col sm:gap-0 sm:text-center"
                 style={{ ["--accent" as string]: meta.accent }}
                 aria-label={`${meta.label}: ${meta.subtitle}`}
